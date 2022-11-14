@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <title>逆数の期待値シミュレーター</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
-    <link rel="stylesheet" href="css/style.css">
-
     <script src="./DrawGraph.js"></script>
 </head>
 
@@ -21,7 +19,9 @@
     <canvas id="ex_chart"></canvas>
 
     <script>
-        window.onload = InitializeGraph();
+        var graphDrawer = new GraphDrawer;
+        window.onload = graphDrawer.InitializeGraph("ex_chart");
+        graphDrawer.Plot(1000);
     </script>
 </body>
 
