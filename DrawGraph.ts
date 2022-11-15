@@ -2,8 +2,9 @@ class GraphDrawer {
     chart: Chart;
     sumCount: number = 0;
     timerId: number;
+    probability: number;
 
-    InitializeGraph(_contextId: string) {
+    InitializeGraph(_reciprocalOfProb: number, _contextId: string) {
         const ctx: any = document.getElementById(_contextId);
 
         const data = {
@@ -49,7 +50,7 @@ class GraphDrawer {
                 yAxes: [{
                     ticks: {
                         min: 1,
-                        max: 8,
+                        max: _reciprocalOfProb * 2,
                     }
                 }],
             },
@@ -68,11 +69,12 @@ class GraphDrawer {
         };
 
         this.chart = new Chart(ctx, plugins);
+        this.probability = 1 / _reciprocalOfProb;
     }
 
-    public Plot(X: number, _interval: number): void {
+    public Plot(_reciprocalOfProb: number, _interval: number): void {
         this.timerId = setInterval(() => {
-            this.AppendPlot(1 / X);
+            this.AppendPlot();
             this.chart.update();
         }, _interval);
     }
@@ -81,7 +83,7 @@ class GraphDrawer {
         clearInterval(this.timerId);
     }
 
-    private AppendPlot(_probability: number): void {
+    private AppendPlot(): void {
         if (!this.chart.data.datasets) {
             this.chart.data.datasets = [];
         }
@@ -91,20 +93,20 @@ class GraphDrawer {
         }
 
         var plotNum: number = this.chart.data.datasets[0].data.length + 1;
-        var tryCount: number = this.TryOnece(_probability);
+        var tryCount: number = this.TryOnece();
         this.sumCount += tryCount;
 
-        (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: 1 / _probability });
+        (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: 1 / this.probability });
         (this.chart.data.datasets[1].data as {}[]).push({ x: plotNum, y: this.sumCount / plotNum });
         (this.chart.data.datasets[2].data as {}[]).push({ x: plotNum, y: tryCount });
     }
 
-    private TryOnece(_probability: number): number {
+    private TryOnece(): number {
         var count: number = 0;
 
         while (true) {
             count++;
-            if (Math.random() <= _probability) {
+            if (Math.random() <= this.probability) {
                 break;
             }
         }

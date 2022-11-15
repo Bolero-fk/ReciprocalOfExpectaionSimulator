@@ -2,7 +2,7 @@ var GraphDrawer = /** @class */ (function () {
     function GraphDrawer() {
         this.sumCount = 0;
     }
-    GraphDrawer.prototype.InitializeGraph = function (_contextId) {
+    GraphDrawer.prototype.InitializeGraph = function (_reciprocalOfProb, _contextId) {
         var ctx = document.getElementById(_contextId);
         var data = {
             datasets: [{
@@ -46,7 +46,7 @@ var GraphDrawer = /** @class */ (function () {
                 yAxes: [{
                         ticks: {
                             min: 1,
-                            max: 8
+                            max: _reciprocalOfProb * 2
                         }
                     }]
             },
@@ -63,18 +63,19 @@ var GraphDrawer = /** @class */ (function () {
             options: config
         };
         this.chart = new Chart(ctx, plugins);
+        this.probability = 1 / _reciprocalOfProb;
     };
-    GraphDrawer.prototype.Plot = function (X, _interval) {
+    GraphDrawer.prototype.Plot = function (_reciprocalOfProb, _interval) {
         var _this = this;
         this.timerId = setInterval(function () {
-            _this.AppendPlot(1 / X);
+            _this.AppendPlot();
             _this.chart.update();
         }, _interval);
     };
     GraphDrawer.prototype.Stop = function () {
         clearInterval(this.timerId);
     };
-    GraphDrawer.prototype.AppendPlot = function (_probability) {
+    GraphDrawer.prototype.AppendPlot = function () {
         if (!this.chart.data.datasets) {
             this.chart.data.datasets = [];
         }
@@ -82,17 +83,17 @@ var GraphDrawer = /** @class */ (function () {
             this.chart.data.datasets[0].data = [];
         }
         var plotNum = this.chart.data.datasets[0].data.length + 1;
-        var tryCount = this.TryOnece(_probability);
+        var tryCount = this.TryOnece();
         this.sumCount += tryCount;
-        this.chart.data.datasets[0].data.push({ x: plotNum, y: 1 / _probability });
+        this.chart.data.datasets[0].data.push({ x: plotNum, y: 1 / this.probability });
         this.chart.data.datasets[1].data.push({ x: plotNum, y: this.sumCount / plotNum });
         this.chart.data.datasets[2].data.push({ x: plotNum, y: tryCount });
     };
-    GraphDrawer.prototype.TryOnece = function (_probability) {
+    GraphDrawer.prototype.TryOnece = function () {
         var count = 0;
         while (true) {
             count++;
-            if (Math.random() <= _probability) {
+            if (Math.random() <= this.probability) {
                 break;
             }
         }

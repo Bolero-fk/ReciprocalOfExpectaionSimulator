@@ -23,16 +23,16 @@
 
     <script>
         var graphDrawer = new GraphDrawer;
-        window.onload = graphDrawer.InitializeGraph("ex_chart");
-        graphDrawer.Plot(4, 10);
+        window.onload = graphDrawer.InitializeGraph(4, "ex_chart");
+        graphDrawer.Plot(10);
 
         function OnButtonClick() {
             graphDrawer.Stop();
 
             var probInput = Number(document.getElementById('probInput').value);
             graphDrawer = new GraphDrawer;
-            graphDrawer.InitializeGraph("ex_chart");
-            graphDrawer.Plot(probInput, 10);
+            graphDrawer.InitializeGraph(probInput, "ex_chart");
+            graphDrawer.Plot(10);
         }
     </script>
 </body>
