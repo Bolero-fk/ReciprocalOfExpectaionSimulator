@@ -22,6 +22,14 @@ class GraphDrawer {
                 fill: false,
                 borderColor: 'rgb(99, 255, 132)',
                 backgroundColor: 'rgb(99, 255, 132)'
+            }, {
+                radius: 0,
+                label: "期待値",
+                data: [],
+                showLine: true,
+                fill: false,
+                borderColor: 'rgb(132, 99, 255)',
+                backgroundColor: 'rgb(132, 99, 255)'
             }],
         };
 
@@ -59,6 +67,7 @@ class GraphDrawer {
 
         (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: tryCount });
         (this.chart.data.datasets[1].data as {}[]).push({ x: plotNum, y: this.sumCount / plotNum });
+        (this.chart.data.datasets[2].data as {}[]).push({ x: plotNum, y: 1 / _probability });
     }
 
     private TryOnece(_probability: number): number {

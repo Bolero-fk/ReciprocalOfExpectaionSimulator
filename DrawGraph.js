@@ -21,6 +21,14 @@ var GraphDrawer = /** @class */ (function () {
                     fill: false,
                     borderColor: 'rgb(99, 255, 132)',
                     backgroundColor: 'rgb(99, 255, 132)'
+                }, {
+                    radius: 0,
+                    label: "期待値",
+                    data: [],
+                    showLine: true,
+                    fill: false,
+                    borderColor: 'rgb(132, 99, 255)',
+                    backgroundColor: 'rgb(132, 99, 255)'
                 }]
         };
         var config = {};
@@ -50,6 +58,7 @@ var GraphDrawer = /** @class */ (function () {
         this.sumCount += tryCount;
         this.chart.data.datasets[0].data.push({ x: plotNum, y: tryCount });
         this.chart.data.datasets[1].data.push({ x: plotNum, y: this.sumCount / plotNum });
+        this.chart.data.datasets[2].data.push({ x: plotNum, y: 1 / _probability });
     };
     GraphDrawer.prototype.TryOnece = function (_probability) {
         var count = 0;
