@@ -1,6 +1,7 @@
 class GraphDrawer {
     chart: Chart;
     sumCount: number = 0;
+    timerId: number;
 
     InitializeGraph(_contextId: string) {
         const ctx: any = document.getElementById(_contextId);
@@ -69,11 +70,15 @@ class GraphDrawer {
         this.chart = new Chart(ctx, plugins);
     }
 
-    public Plot(_probability: number, _interval: number): void {
-        setInterval(() => {
-            this.AppendPlot(_probability);
+    public Plot(X: number, _interval: number): void {
+        this.timerId = setInterval(() => {
+            this.AppendPlot(1 / X);
             this.chart.update();
         }, _interval);
+    }
+
+    public Stop(): void {
+        clearInterval(this.timerId);
     }
 
     private AppendPlot(_probability: number): void {

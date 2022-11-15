@@ -64,12 +64,15 @@ var GraphDrawer = /** @class */ (function () {
         };
         this.chart = new Chart(ctx, plugins);
     };
-    GraphDrawer.prototype.Plot = function (_probability, _interval) {
+    GraphDrawer.prototype.Plot = function (X, _interval) {
         var _this = this;
-        setInterval(function () {
-            _this.AppendPlot(_probability);
+        this.timerId = setInterval(function () {
+            _this.AppendPlot(1 / X);
             _this.chart.update();
         }, _interval);
+    };
+    GraphDrawer.prototype.Stop = function () {
+        clearInterval(this.timerId);
     };
     GraphDrawer.prototype.AppendPlot = function (_probability) {
         if (!this.chart.data.datasets) {

@@ -18,10 +18,22 @@
 
     <canvas id="ex_chart"></canvas>
 
+    <input type="number" id='probInput' min="1" max="1000" step="1" value="4">
+    <button type="submit" id="restartButton" onclick="OnButtonClick();">再シミュレーション</button>
+
     <script>
         var graphDrawer = new GraphDrawer;
         window.onload = graphDrawer.InitializeGraph("ex_chart");
-        graphDrawer.Plot(0.25, 10);
+        graphDrawer.Plot(4, 10);
+
+        function OnButtonClick() {
+            graphDrawer.Stop();
+
+            var probInput = Number(document.getElementById('probInput').value);
+            graphDrawer = new GraphDrawer;
+            graphDrawer.InitializeGraph("ex_chart");
+            graphDrawer.Plot(probInput, 10);
+        }
     </script>
 </body>
 
