@@ -1,5 +1,6 @@
 class GraphDrawer {
     chart: Chart;
+    sumCount: number = 0;
 
     InitializeGraph(_contextId: string) {
         const ctx: any = document.getElementById(_contextId);
@@ -7,12 +8,20 @@ class GraphDrawer {
         const data = {
             datasets: [{
                 radius: 0,
-                label: "フーリエ関数",
+                label: "1回の試行回数",
                 data: [],
                 showLine: true,
                 fill: false,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgb(255, 99, 132)'
+            }, {
+                radius: 0,
+                label: "試行回数の平均",
+                data: [],
+                showLine: true,
+                fill: false,
+                borderColor: 'rgb(99, 255, 132)',
+                backgroundColor: 'rgb(99, 255, 132)'
             }],
         };
 
@@ -44,22 +53,22 @@ class GraphDrawer {
             this.chart.data.datasets[0].data = [];
         }
 
-        var plotNum: number = this.chart.data.datasets[0].data.length;
-        (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: this.TryOnece(_probability) });
-        console.log(this.chart.data.datasets[0].data);
-        console.log("Interval type1");
+        var plotNum: number = this.chart.data.datasets[0].data.length + 1;
+        var tryCount: number = this.TryOnece(_probability);
+        this.sumCount += tryCount;
+
+        (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: tryCount });
+        (this.chart.data.datasets[1].data as {}[]).push({ x: plotNum, y: this.sumCount / plotNum });
     }
 
     private TryOnece(_probability: number): number {
         var count: number = 0;
-        const rand = (min: number, max: number): number => {
-            return (Math.floor(Math.random() * (max - min + 1)) + min);
-        };
 
         while (true) {
             count++;
-            if (rand(0, 1) <= _probability)
+            if (Math.random() <= _probability) {
                 break;
+            }
         }
 
         return count;

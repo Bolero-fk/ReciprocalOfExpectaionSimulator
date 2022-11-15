@@ -1,17 +1,26 @@
 var GraphDrawer = /** @class */ (function () {
     function GraphDrawer() {
+        this.sumCount = 0;
     }
     GraphDrawer.prototype.InitializeGraph = function (_contextId) {
         var ctx = document.getElementById(_contextId);
         var data = {
             datasets: [{
                     radius: 0,
-                    label: "フーリエ関数",
+                    label: "1回の試行回数",
                     data: [],
                     showLine: true,
                     fill: false,
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgb(255, 99, 132)'
+                }, {
+                    radius: 0,
+                    label: "試行回数の平均",
+                    data: [],
+                    showLine: true,
+                    fill: false,
+                    borderColor: 'rgb(99, 255, 132)',
+                    backgroundColor: 'rgb(99, 255, 132)'
                 }]
         };
         var config = {};
@@ -36,20 +45,19 @@ var GraphDrawer = /** @class */ (function () {
         if (!this.chart.data.datasets[0].data) {
             this.chart.data.datasets[0].data = [];
         }
-        var plotNum = this.chart.data.datasets[0].data.length;
-        this.chart.data.datasets[0].data.push({ x: plotNum, y: this.TryOnece(_probability) });
-        console.log(this.chart.data.datasets[0].data);
-        console.log("Interval type1");
+        var plotNum = this.chart.data.datasets[0].data.length + 1;
+        var tryCount = this.TryOnece(_probability);
+        this.sumCount += tryCount;
+        this.chart.data.datasets[0].data.push({ x: plotNum, y: tryCount });
+        this.chart.data.datasets[1].data.push({ x: plotNum, y: this.sumCount / plotNum });
     };
     GraphDrawer.prototype.TryOnece = function (_probability) {
         var count = 0;
-        var rand = function (min, max) {
-            return (Math.floor(Math.random() * (max - min + 1)) + min);
-        };
         while (true) {
             count++;
-            if (rand(0, 1) <= _probability)
+            if (Math.random() <= _probability) {
                 break;
+            }
         }
         return count;
     };
