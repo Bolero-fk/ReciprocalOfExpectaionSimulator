@@ -7,7 +7,7 @@ var GraphDrawer = /** @class */ (function () {
         var data = {
             datasets: [{
                     radius: 0,
-                    label: "1回の試行回数",
+                    label: "期待値",
                     data: [],
                     showLine: true,
                     fill: false,
@@ -23,15 +23,40 @@ var GraphDrawer = /** @class */ (function () {
                     backgroundColor: 'rgb(99, 255, 132)'
                 }, {
                     radius: 0,
-                    label: "期待値",
+                    label: "1回の試行回数",
                     data: [],
                     showLine: true,
                     fill: false,
                     borderColor: 'rgb(132, 99, 255)',
-                    backgroundColor: 'rgb(132, 99, 255)'
+                    backgroundColor: 'rgb(132, 99, 255)',
+                    steppedLine: "middle",
+                    borderWidth: 1
                 }]
         };
-        var config = {};
+        var config = {
+            animation: {
+                duration: 1
+            },
+            scales: {
+                xAxes: [{
+                        ticks: {
+                            min: 1
+                        }
+                    }],
+                yAxes: [{
+                        ticks: {
+                            min: 1,
+                            max: 8
+                        }
+                    }]
+            },
+            tooltips: {
+                enabled: false
+            },
+            legend: {
+                position: 'bottom'
+            }
+        };
         var plugins = {
             type: 'scatter',
             data: data,
@@ -56,9 +81,9 @@ var GraphDrawer = /** @class */ (function () {
         var plotNum = this.chart.data.datasets[0].data.length + 1;
         var tryCount = this.TryOnece(_probability);
         this.sumCount += tryCount;
-        this.chart.data.datasets[0].data.push({ x: plotNum, y: tryCount });
+        this.chart.data.datasets[0].data.push({ x: plotNum, y: 1 / _probability });
         this.chart.data.datasets[1].data.push({ x: plotNum, y: this.sumCount / plotNum });
-        this.chart.data.datasets[2].data.push({ x: plotNum, y: 1 / _probability });
+        this.chart.data.datasets[2].data.push({ x: plotNum, y: tryCount });
     };
     GraphDrawer.prototype.TryOnece = function (_probability) {
         var count = 0;

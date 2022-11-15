@@ -8,12 +8,12 @@ class GraphDrawer {
         const data = {
             datasets: [{
                 radius: 0,
-                label: "1回の試行回数",
+                label: "期待値",
                 data: [],
                 showLine: true,
                 fill: false,
                 borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgb(255, 99, 132)'
+                backgroundColor: 'rgb(255, 99, 132)',
             }, {
                 radius: 0,
                 label: "試行回数の平均",
@@ -21,19 +21,43 @@ class GraphDrawer {
                 showLine: true,
                 fill: false,
                 borderColor: 'rgb(99, 255, 132)',
-                backgroundColor: 'rgb(99, 255, 132)'
+                backgroundColor: 'rgb(99, 255, 132)',
             }, {
                 radius: 0,
-                label: "期待値",
+                label: "1回の試行回数",
                 data: [],
                 showLine: true,
                 fill: false,
                 borderColor: 'rgb(132, 99, 255)',
-                backgroundColor: 'rgb(132, 99, 255)'
+                backgroundColor: 'rgb(132, 99, 255)',
+                steppedLine: <'middle'>"middle",
+                borderWidth: 1,
             }],
         };
 
         var config = {
+            animation: {
+                duration: 1
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        min: 1,
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 1,
+                        max: 8,
+                    }
+                }],
+            },
+            tooltips: {
+                enabled: false,
+            },
+            legend: {
+                position: <'bottom'>'bottom'
+            }
         };
 
         var plugins = {
@@ -65,9 +89,9 @@ class GraphDrawer {
         var tryCount: number = this.TryOnece(_probability);
         this.sumCount += tryCount;
 
-        (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: tryCount });
+        (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: 1 / _probability });
         (this.chart.data.datasets[1].data as {}[]).push({ x: plotNum, y: this.sumCount / plotNum });
-        (this.chart.data.datasets[2].data as {}[]).push({ x: plotNum, y: 1 / _probability });
+        (this.chart.data.datasets[2].data as {}[]).push({ x: plotNum, y: tryCount });
     }
 
     private TryOnece(_probability: number): number {
