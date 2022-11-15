@@ -1,14 +1,14 @@
 class GraphDrawer {
     chart: Chart;
 
-    InitializeGraph(contextId: string) {
-        const ctx: any = document.getElementById(contextId);
+    InitializeGraph(_contextId: string) {
+        const ctx: any = document.getElementById(_contextId);
 
         const data = {
             datasets: [{
                 radius: 0,
                 label: "フーリエ関数",
-                data: [{ x: 0, y: 0 }, { x: 0, y: 1 },],
+                data: [],
                 showLine: true,
                 fill: false,
                 borderColor: 'rgb(255, 99, 132)',
@@ -28,14 +28,14 @@ class GraphDrawer {
         this.chart = new Chart(ctx, plugins);
     }
 
-    public Plot(interval: number): void {
+    public Plot(_probability: number, _interval: number): void {
         setInterval(() => {
-            this.AppendPlot();
+            this.AppendPlot(_probability);
             this.chart.update();
-        }, interval);
+        }, _interval);
     }
 
-    private AppendPlot(): void {
+    private AppendPlot(_probability: number): void {
         if (!this.chart.data.datasets) {
             this.chart.data.datasets = [];
         }
@@ -45,8 +45,24 @@ class GraphDrawer {
         }
 
         var plotNum: number = this.chart.data.datasets[0].data.length;
-        (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum + 1, y: 1 });
+        (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: this.TryOnece(_probability) });
         console.log(this.chart.data.datasets[0].data);
         console.log("Interval type1");
     }
+
+    private TryOnece(_probability: number): number {
+        var count: number = 0;
+        const rand = (min: number, max: number): number => {
+            return (Math.floor(Math.random() * (max - min + 1)) + min);
+        };
+
+        while (true) {
+            count++;
+            if (rand(0, 1) <= _probability)
+                break;
+        }
+
+        return count;
+    }
+
 }
