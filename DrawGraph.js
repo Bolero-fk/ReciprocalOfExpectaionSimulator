@@ -55,7 +55,8 @@ var GraphDrawer = /** @class */ (function () {
             },
             legend: {
                 position: 'bottom'
-            }
+            },
+            events: []
         };
         var plugins = {
             type: 'scatter',

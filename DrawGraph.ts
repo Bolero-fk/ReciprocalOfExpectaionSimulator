@@ -60,7 +60,8 @@ class GraphDrawer {
             },
             legend: {
                 position: <'bottom'>'bottom'
-            }
+            },
+            events: [],
         };
 
         var plugins = {
