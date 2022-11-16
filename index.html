@@ -47,6 +47,17 @@
 
             document.getElementById('expectation').innerText = probInput;
         }
+
+        const inputElem = document.getElementById("probInput");
+        inputElem.addEventListener("change", update);
+        function update() {
+            var probInput = Number(document.getElementById('probInput').value);
+            if (probInput < 1)
+                document.getElementById('probInput').value = 1;
+
+            if (probInput > 1000)
+                document.getElementById('probInput').value = 1000;
+        }
     </script>
 </body>
 
