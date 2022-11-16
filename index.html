@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>逆数の期待値シミュレーター</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     <script src="./DrawGraph.js"></script>
 </head>
 
@@ -18,8 +19,18 @@
 
     <canvas id="ex_chart"></canvas>
 
-    <input type="number" id='probInput' min="1" max="1000" step="1" value="4">
+    P =
+    <span style="display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center;">
+        <span style="padding: 0 10px; border-bottom: 1px solid #000000;">1</span>
+        <span style="padding: 0 10px;"><input type="number" id='probInput' class="input" min="1" max="1000" step="1"
+                value="4"></span>
+    </span>
     <button type="submit" id="restartButton" onclick="OnButtonClick();">再シミュレーション</button>
+
+    <br>
+    <br>
+    期待値(理論値) = <span id="expectation"> 4</span>,
+    N回の試行回数の平均値 = <span id="averageTryCount"></span>
 
     <script>
         var graphDrawer = new GraphDrawer;
@@ -33,6 +44,8 @@
             graphDrawer = new GraphDrawer;
             graphDrawer.InitializeGraph(probInput, "ex_chart");
             graphDrawer.Plot(10);
+
+            document.getElementById('expectation').innerText = probInput;
         }
     </script>
 </body>

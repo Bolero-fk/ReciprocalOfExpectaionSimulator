@@ -67,13 +67,16 @@ var GraphDrawer = /** @class */ (function () {
     };
     GraphDrawer.prototype.Plot = function (_reciprocalOfProb, _interval) {
         var _this = this;
-        this.timerId = setInterval(function () {
+        this.plotTimerId = setInterval(function () {
             _this.AppendPlot();
-            _this.chart.update();
         }, _interval);
+        this.updateTimerId = setInterval(function () {
+            _this.chart.update();
+        }, 10);
     };
     GraphDrawer.prototype.Stop = function () {
-        clearInterval(this.timerId);
+        clearInterval(this.plotTimerId);
+        clearInterval(this.updateTimerId);
     };
     GraphDrawer.prototype.AppendPlot = function () {
         if (!this.chart.data.datasets) {
@@ -88,6 +91,9 @@ var GraphDrawer = /** @class */ (function () {
         this.chart.data.datasets[0].data.push({ x: plotNum, y: 1 / this.probability });
         this.chart.data.datasets[1].data.push({ x: plotNum, y: this.sumCount / plotNum });
         this.chart.data.datasets[2].data.push({ x: plotNum, y: tryCount });
+        var expectationElem = document.getElementById('averageTryCount');
+        if (expectationElem)
+            expectationElem.innerText = (this.sumCount / plotNum).toFixed(2);
     };
     GraphDrawer.prototype.TryOnece = function () {
         var count = 0;

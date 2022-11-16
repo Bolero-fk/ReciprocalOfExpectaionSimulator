@@ -1,7 +1,8 @@
 class GraphDrawer {
     chart: Chart;
     sumCount: number = 0;
-    timerId: number;
+    plotTimerId: number;
+    updateTimerId: number;
     probability: number;
 
     InitializeGraph(_reciprocalOfProb: number, _contextId: string) {
@@ -73,14 +74,18 @@ class GraphDrawer {
     }
 
     public Plot(_reciprocalOfProb: number, _interval: number): void {
-        this.timerId = setInterval(() => {
+        this.plotTimerId = setInterval(() => {
             this.AppendPlot();
-            this.chart.update();
         }, _interval);
+
+        this.updateTimerId = setInterval(() => {
+            this.chart.update();
+        }, 10);
     }
 
     public Stop(): void {
-        clearInterval(this.timerId);
+        clearInterval(this.plotTimerId);
+        clearInterval(this.updateTimerId);
     }
 
     private AppendPlot(): void {
@@ -99,6 +104,10 @@ class GraphDrawer {
         (this.chart.data.datasets[0].data as {}[]).push({ x: plotNum, y: 1 / this.probability });
         (this.chart.data.datasets[1].data as {}[]).push({ x: plotNum, y: this.sumCount / plotNum });
         (this.chart.data.datasets[2].data as {}[]).push({ x: plotNum, y: tryCount });
+
+        const expectationElem = document.getElementById('averageTryCount');
+        if (expectationElem)
+            expectationElem.innerText = (this.sumCount / plotNum).toFixed(2);
     }
 
     private TryOnece(): number {
