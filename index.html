@@ -33,10 +33,12 @@
     N回の試行回数の平均値 = <span id="averageTryCount"></span>
 
     <script>
+        // グラフの初期設定
         var graphDrawer = new GraphDrawer;
         window.onload = graphDrawer.InitializeGraph(4, "ex_chart");
         graphDrawer.Plot(10);
 
+        // 確率を変えて再シミュレーション
         function OnButtonClick() {
             graphDrawer.Stop();
 
@@ -48,6 +50,7 @@
             document.getElementById('expectation').innerText = probInput;
         }
 
+        // 入力変更時に数値制限をチェック
         const inputElem = document.getElementById("probInput");
         inputElem.addEventListener("change", update);
         function update() {

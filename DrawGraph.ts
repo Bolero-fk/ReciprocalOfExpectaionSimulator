@@ -5,6 +5,7 @@ class GraphDrawer {
     updateTimerId: number;
     probability: number;
 
+    // グラフの初期化
     InitializeGraph(_reciprocalOfProb: number, _contextId: string) {
         const ctx: any = document.getElementById(_contextId);
 
@@ -74,6 +75,7 @@ class GraphDrawer {
         this.probability = 1 / _reciprocalOfProb;
     }
 
+    // シミュレーションをしてグラフに値をプロットする
     public Plot(_reciprocalOfProb: number, _interval: number): void {
         this.plotTimerId = setInterval(() => {
             this.AppendPlot();
@@ -84,11 +86,13 @@ class GraphDrawer {
         }, 10);
     }
 
+    // グラフの描画を停止する
     public Stop(): void {
         clearInterval(this.plotTimerId);
         clearInterval(this.updateTimerId);
     }
 
+    // 一回分シミュレーションしてその結果をグラフに設定する
     private AppendPlot(): void {
         if (!this.chart.data.datasets) {
             this.chart.data.datasets = [];
@@ -111,6 +115,7 @@ class GraphDrawer {
             expectationElem.innerText = (this.sumCount / plotNum).toFixed(2);
     }
 
+    // 1/Xが1回当たるまで繰り返す試行を一回を行う
     private TryOnece(): number {
         var count: number = 0;
 

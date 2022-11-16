@@ -2,6 +2,7 @@ var GraphDrawer = /** @class */ (function () {
     function GraphDrawer() {
         this.sumCount = 0;
     }
+    // グラフの初期化
     GraphDrawer.prototype.InitializeGraph = function (_reciprocalOfProb, _contextId) {
         var ctx = document.getElementById(_contextId);
         var data = {
@@ -66,6 +67,7 @@ var GraphDrawer = /** @class */ (function () {
         this.chart = new Chart(ctx, plugins);
         this.probability = 1 / _reciprocalOfProb;
     };
+    // シミュレーションをしてグラフに値をプロットする
     GraphDrawer.prototype.Plot = function (_reciprocalOfProb, _interval) {
         var _this = this;
         this.plotTimerId = setInterval(function () {
@@ -75,10 +77,12 @@ var GraphDrawer = /** @class */ (function () {
             _this.chart.update();
         }, 10);
     };
+    // グラフの描画を停止する
     GraphDrawer.prototype.Stop = function () {
         clearInterval(this.plotTimerId);
         clearInterval(this.updateTimerId);
     };
+    // 一回分シミュレーションしてその結果をグラフに設定する
     GraphDrawer.prototype.AppendPlot = function () {
         if (!this.chart.data.datasets) {
             this.chart.data.datasets = [];
@@ -96,6 +100,7 @@ var GraphDrawer = /** @class */ (function () {
         if (expectationElem)
             expectationElem.innerText = (this.sumCount / plotNum).toFixed(2);
     };
+    // 1/Xが1回当たるまで繰り返す試行を一回を行う
     GraphDrawer.prototype.TryOnece = function () {
         var count = 0;
         while (true) {
